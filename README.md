@@ -2,6 +2,28 @@
 A collection of reusable GitHub Actions workflows I use in my public and private projects.
 
 
+## auto-merge-dependabot-pr.yml
+
+Workflow that can automatically merge Dependabot pull requests after the CI builds has run successfully. Below is an example workflow you can use in your repository. The workflow is executed when the "Integrate" ran completed successfully.
+
+```yml
+# .github/workflows/auto-merge.yml
+name: Merge me!
+
+on:
+  workflow_run:
+    types:
+      - completed
+    workflows:
+      - 'Integrate'
+
+jobs:
+  merge-me:
+    uses: stefanzweifel/reusable-workflows/.github/workflows/auto-merge-dependabot-pr.yml@main
+    secrets:
+      MERGE_ME_GITHUB_TOKEN: ${{ secrets.MERGE_ME_GITHUB_TOKEN }}
+```
+
 ## php-cs-fixer
 
 Workflow to run `php-cs-fixer` and automatically fix code style violations. Changes are pushed back to the GitHub repository.

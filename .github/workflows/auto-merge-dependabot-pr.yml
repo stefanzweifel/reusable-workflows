@@ -1,0 +1,24 @@
+name: Auto Merge Dependabot Pull Requests
+
+on:
+  workflow_call:
+    secrets:
+      MERGE_ME_GITHUB_TOKEN:
+        required: false
+        description: 'GitHub Token used to merge Pull Request.'
+
+jobs:
+  auto-merge:
+    name: Auto Merge
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Merge me!
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        uses: ridedott/merge-me-action@v2
+        with:
+          # Custom GITHUB_TOKEN is required in order to successfully merge dependabot
+          # pull requests when integrate workflow is green.
+          GITHUB_TOKEN: ${{ secrets.MERGE_ME_GITHUB_TOKEN }}
+          PRESET: DEPENDABOT_MINOR
