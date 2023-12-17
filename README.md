@@ -1,6 +1,26 @@
 # reusable-workflows
 A collection of reusable GitHub Actions workflows I use in my public and private projects.
 
+
+## php-cs-fixer
+
+Workflow to run `php-cs-fixer` and automatically fix code style violations. Changes are pushed back to the GitHub repository.
+
+```yml
+# .github/workflows/php-cs-fixer.yml
+name: php-cs-fixer
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  php-cs-fixer:
+    uses: stefanzweifel/reusable-workflows/.github/workflows/php-cs-fixer.yml@main
+```
+
 ## `release-drafter.yml`
 
 Workflow to run [release-drafter](https://github.com/release-drafter/release-drafter) in projects.
