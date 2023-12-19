@@ -60,7 +60,7 @@ Workflow to run [Laravel Pint](https://github.com/laravel/pint) and automaticall
 
 ```yml
 # .github/workflows/laravel-pint-fixer.yml
-name: php-cs-fixer
+name: Laravel Pint
 
 on:
   pull_request:
@@ -69,7 +69,7 @@ on:
       - main
 
 jobs:
-  php-cs-fixer:
+  pint:
     uses: stefanzweifel/reusable-workflows/.github/workflows/laravel-pint-fixer.yml@main
 ```
 
