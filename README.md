@@ -24,6 +24,36 @@ jobs:
       MERGE_ME_GITHUB_TOKEN: ${{ secrets.MERGE_ME_GITHUB_TOKEN }}
 ```
 
+## `backup-restore.yml`
+
+Workflow to run [laravel-backup-restore](https://github.com/stefanzweifel/laravel-backup-restore) and restore a database backup in a Laravel app. The backup must be stored on an AWS S3 bucket.
+
+The passed `app_name` will be used as `APP_NAME` and will be used to find the latest backup for your app.
+
+```yml
+# .github/workflows/backup-restore.yml
+name: backup
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 14 1 * *"
+
+jobs:
+  restore:
+    uses: stefanzweifel/reusable-workflows/.github/workflows/backup-restore.yml@main
+    with:
+      # Value of `APP_NAME` env variable. Used to locate backup on remote disk.
+      app_name: 'My Laravel App'
+      php_version: '8.3'
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      AWS_BACKUP_BUCKET: ${{ secrets.AWS_BACKUP_BUCKET }}
+      BACKUP_ARCHIVE_PASSWORD: ${{ secrets.BACKUP_ARCHIVE_PASSWORD }}
+```
+
 ## `laravel-pint-fixer.yml`
 
 Workflow to run [Laravel Pint](https://github.com/laravel/pint) and automatically fix code style violations. Changes are pushed back to the GitHub repository.

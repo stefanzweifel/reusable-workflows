@@ -1,0 +1,76 @@
+name: MySQL Backup Restore
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        description: 'Name .'
+        required: true
+        type: string
+      php_version:
+        description: 'PHP version to be used.'
+        required: true
+        type: string
+        default: '8.2'
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+        description: 'GitHub Token used to merge Pull Request.'
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+        description: 'GitHub Token used to merge Pull Request.'
+      AWS_DEFAULT_REGION:
+        required: true
+        description: 'GitHub Token used to merge Pull Request.'
+      AWS_BACKUP_BUCKET:
+        required: true
+        description: 'GitHub Token used to merge Pull Request.'
+      BACKUP_ARCHIVE_PASSWORD:
+        required: true
+        description: 'GitHub Token used to merge Pull Request.'
+
+jobs:
+  backuip-restore:
+    name: MySQL Backup Restore
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: laravel
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ inputs.php_version }}
+
+      - uses: ramsey/composer-install@v2
+
+      - run: cp .env.example .env
+
+      - run: php artisan key:generate
+
+      - name: Restore Backup
+        run: php artisan backup:restore --backup=latest --no-interaction
+        env:
+            APP_NAME: ${{ inputs.app_name }}
+            DB_PASSWORD: 'password'
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+            AWS_BACKUP_BUCKET: ${{ secrets.AWS_BACKUP_BUCKET }}
+            BACKUP_ARCHIVE_PASSWORD: ${{ secrets.BACKUP_ARCHIVE_PASSWORD }}
+
+      - name: Wipe Database
+        run: php artisan db:wipe --no-interaction
+        env:
+            DB_PASSWORD: 'password'
