@@ -1,0 +1,31 @@
+name: PHPStan
+
+on:
+  workflow_call:
+    inputs:
+      php_version:
+        description: 'PHP version to be used.'
+        required: true
+        type: string
+        default: '8.2'
+
+jobs:
+  phpstan:
+    name: PHPStan
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ inputs.php_version }}
+
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@v2
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan --error-format=github

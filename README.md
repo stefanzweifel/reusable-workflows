@@ -62,6 +62,25 @@ jobs:
     uses: stefanzweifel/reusable-workflows/.github/workflows/php-cs-fixer.yml@main
 ```
 
+## `phpstan.yml`
+
+Workflow to run [PHPStan](https://phpstan.org/) in projects.
+To prevent usage spikes, the job is not executed if the user is Dependabot.
+
+```yml
+# .github/workflows/phpstan.yml
+name: Release Drafter
+
+on:
+  push
+
+jobs:
+  update_release_draft:
+    uses: stefanzweifel/reusable-workflows/.github/workflows/phpstan.yml@main
+    with:
+      php_version: '8.3'
+```
+
 ## `release-drafter.yml`
 
 Workflow to run [release-drafter](https://github.com/release-drafter/release-drafter) in projects.
