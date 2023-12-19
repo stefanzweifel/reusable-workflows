@@ -111,6 +111,22 @@ jobs:
       php_version: '8.3'
 ```
 
+## `post-release-comments.yml`
+
+
+```yml
+# .github/workflows/post-release-comments.yml
+name: Post Release Comments
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  comments:
+    uses: stefanzweifel/reusable-workflows/.github/workflows/post-release-comments.yml@main
+```
+
 ## `release-drafter.yml`
 
 Workflow to run [release-drafter](https://github.com/release-drafter/release-drafter) in projects.

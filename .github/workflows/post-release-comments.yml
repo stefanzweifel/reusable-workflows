@@ -1,0 +1,26 @@
+name: Post Release Comments
+
+on:
+  workflow_call:
+
+jobs:
+  post-release-comments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+    
+      - name: Get Changelog
+        id: changelog
+        uses: statamic/changelog-action@v1
+        with:
+          version: ${{ github.ref }}
+
+      - name: Comment on related issues
+        uses: duncanmcclean/post-release-comments@v1.0.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: ${{ github.ref }}
+          changelog: ${{ steps.changelog.outputs.text }}
