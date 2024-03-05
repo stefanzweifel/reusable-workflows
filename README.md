@@ -113,6 +113,7 @@ jobs:
 
 ## `post-release-comments.yml`
 
+This workflow uses [Duncan McClean](https://github.com/duncanmcclean/)'s [post-release-comments](https://github.com/duncanmcclean/post-release-comments) action to notify users in issues and pull requests, if their issue or pull request has been mentioned in a release.
 
 ```yml
 # .github/workflows/post-release-comments.yml
