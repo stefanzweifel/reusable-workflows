@@ -99,7 +99,7 @@ To prevent usage spikes, the job is not executed if the user is Dependabot.
 
 ```yml
 # .github/workflows/phpstan.yml
-name: Release Drafter
+name: PHPStan
 
 on:
   push
@@ -160,6 +160,6 @@ on:
     types: [released]
 
 jobs:
-  update
+  update:
     uses: stefanzweifel/reusable-workflows/.github/workflows/update-changelog.yml@main
 ```
