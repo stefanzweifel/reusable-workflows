@@ -68,6 +68,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   pint:
     uses: stefanzweifel/reusable-workflows/.github/workflows/laravel-pint-fixer.yml@main
@@ -86,6 +89,9 @@ on:
   push:
     branches:
       - main
+
+permissions:
+  contents: write
 
 jobs:
   php-cs-fixer:
@@ -142,6 +148,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   update_release_draft:
     uses: stefanzweifel/reusable-workflows/.github/workflows/release-drafter.yml@main
@@ -159,6 +168,9 @@ name: "Update Changelog"
 on:
   release:
     types: [released]
+
+permissions:
+  contents: write
 
 jobs:
   update:
